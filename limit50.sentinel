@@ -1,0 +1,26 @@
+import "tfrun"
+import "decimal"
+
+limit = decimal.new(50)
+# Determine proposed monthly cost
+workspace_name = tfrun.workspace.name
+proposed_cost = decimal.new(tfrun.cost_estimate.proposed_monthly_cost)
+
+# Compare proposed monthly cost to the limit
+limit_cost = func(limit) {
+    if proposed_cost.lte(limit) {
+    print("Proposed monthly cost", proposed_cost.string,
+            "of workspace", workspace_name,
+            "is under the limit:", limit.string)
+    return true
+    } else {
+    print("Proposed monthly cost", proposed_cost.string,
+            "of workspace", workspace_name,
+            "is over the limit:", limit.string)
+    return false
+    }
+}
+
+main = rule { 
+    limit_cost(limit)
+}
